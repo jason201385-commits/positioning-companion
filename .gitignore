@@ -1,0 +1,18 @@
+# === 機密保護：真實陪跑對象資料永不上傳（只保留範本）===
+runners/*
+!runners/_範本/
+!runners/_範本/**
+
+# === 本機機密素材（諮詢逐字 / 蒸餾語料 / 原始研究）===
+**/諮詢蒸餾/
+**/語氣語料/
+**/nuwa-research/
+*-raw.json
+
+# === OS / 編輯器雜物 ===
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+.idea/
+.vscode/
