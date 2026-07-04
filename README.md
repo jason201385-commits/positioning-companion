@@ -116,6 +116,25 @@
 
 ---
 
+## 🧰 配套工具 & 致謝：站在前輩的肩膀上
+
+定位小書僮只做**一件事**——幫你把「該做什麼」想清楚。想清楚之後「每天怎麼做」，靠的是一整套更成熟的開源工具。
+
+這個工具、以及我們整個陪跑社群，基本上都是**架在 [Hao（@Hao0321）](https://github.com/Hao0321) 前輩的四個開源 repo 上**的——我們的夥伴幾乎都用它們把方向變成每天的產出。誠心致謝：
+
+| 前輩的工具 | 它幫你做到 | 定位完，接著用它 |
+|---|---|---|
+| [claude-skill-social-post](https://github.com/Hao0321/claude-skill-social-post) | 學你的 FB 語氣、排 14 天內容日曆、自動發到 FB／IG／Threads／X | **每天發什麼、怎麼發** |
+| [ai-media-generator](https://github.com/Hao0321/ai-media-generator) | 在 14+ 個平台（Midjourney／Kling／Suno／Veo…）產出導演級的生圖／生影片／生音樂提示詞 | **把貼文變成畫面** |
+| [video-autopilot-kit](https://github.com/Hao0321/video-autopilot-kit) | CapCut 自動化＋ffmpeg 後製，做短影音／無旁白 vlog | **把素材剪成影片** |
+| [claude-skill-code-cleanup](https://github.com/Hao0321/claude-skill-code-cleanup) | 掃 skill／repo 的重複、命名漂移、私有↔公開同步落差 | **把工具本身保持乾淨** |
+
+> 定位小書僮是**輔助**：它不取代這些工具，是幫你**先想清楚方向、好讓這些強大的工具真正用得上**——有神兵沒方向會空轉。方向清楚了，就交給上面這些工具去執行。
+
+四個 repo 都是 MIT 授權。謝謝 Hao 前輩把這些工具開源出來、也謝謝他給我們社群一個舞台。🙏
+
+---
+
 ## 🤝 想要有人陪你跑
 
 > 💬 **社群入口：自由工坊 Discord → https://discord.gg/bxwDGxmnA**
@@ -133,7 +152,7 @@
 
 - **MIT 授權**（見 `LICENSE`）。歡迎自用、改造、轉給有需要的人。
 - 方法源自真實「定位陪跑」過程的蒸餾，已做去識別化（移除所有真實姓名與可辨識個資）。
-- **Credit**：由 **Jason（傳恩）／ easyknowai** 製作，並感謝開源 GitHub 生態的協作與啟發。
+- **Credit**：由 **Jason（傳恩）／ easyknowai** 製作。特別感謝 **[Hao（@Hao0321）](https://github.com/Hao0321) 前輩**開源的四個 repo（social-post／ai-media-generator／video-autopilot-kit／code-cleanup）——本工具是**輔助**：幫大家先想清楚方向、好讓這些工具真正用得上；工具負責執行，定位負責讓人知道拿它們做什麼（見上方「配套工具」）。
 
 ---
 
