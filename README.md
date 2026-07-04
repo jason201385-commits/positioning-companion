@@ -36,6 +36,8 @@
 
 ## ⭐ 三種用法（從最低門檻開始）
 
+> 🔰 **完全新手？** 先看 **[新手安裝使用指南](新手安裝使用指南.md)**——從「要不要裝東西」到「一步一步裝好」都幫你寫清楚了。
+
 ### 🟢 用法 A：貼進任何 AI 對話視窗（最簡單，不用裝任何東西）
 
 > **沒有 Claude Code 也能跑。** ChatGPT、Claude.ai、Gemini 都行。
@@ -47,8 +49,11 @@
 
 ### 🔵 用法 B：當 Claude Code skill
 
-1. 把整個 repo 複製成一個叫 `定位小書僮` 的資料夾，放到 `~/.claude/skills/` 下
-   （最終路徑長成 `~/.claude/skills/定位小書僮/SKILL.md`；Windows：`C:\Users\<你>\.claude\skills\定位小書僮\SKILL.md`）。
+> 還沒裝 Claude Code？先照這份逐步教學下載安裝：**<https://claude.easyknowai.com/>**（有圖，一步一步）。裝好再回來。完整步驟見 [新手安裝使用指南](新手安裝使用指南.md)。
+
+1. 最省事：把這個 repo 網址貼給 Claude，說 **「幫我安裝這個 skill」**（「給我裝」三字訣）。
+   或手動：把整個 repo 複製成一個叫 `定位小書僮` 的資料夾，放到 `~/.claude/skills/` 下
+   （最終路徑 `~/.claude/skills/定位小書僮/SKILL.md`；Windows：`C:\Users\<你>\.claude\skills\定位小書僮\SKILL.md`）。
 2. 開 Claude Code，直接說：**「幫我定位」** 或 **「我在 AI 時代能做什麼」**。
 3. 跟著它的提問走。`runners/` 是工作目錄，你的存檔會寫在這裡。
 
