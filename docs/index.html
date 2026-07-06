@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>定位小書僮 — AI 時代的自助定位工具</title>
+<meta name="description" content="免費開源的自助定位工具。用好惡＋夢想年＋財務可行性，把「我到底該做什麼」想清楚，拿到一張定位卡。貼進任何 AI 就能跑，不用安裝。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="定位小書僮 — 先想清楚方向，再開始">
+<meta property="og:description" content="免費開源的自助定位工具。把「我在 AI 時代到底該做什麼」想清楚，拿到一張定位卡。貼進任何 AI 就能跑。">
+<meta name="twitter:card" content="summary">
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0; background:#F3F1E9}
+  img,svg{max-width:100%; height:auto}
+</style>
+</head>
+<body>
+<style>
+  :root{
+    --paper:#F3F1E9; --paper-2:#FBFAF4; --card:#FCFBF6;
+    --ink:#173A3E; --ink-body:#31474A; --muted:#697C7B;
+    --amber:#C2762F; --amber-deep:#9E5B1B; --teal:#2C6E6B;
+    --line:#DCD9CC; --line-2:#E7E4D8;
+    --sans:"PingFang TC","PingFang SC","Noto Sans TC","Microsoft JhengHei",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    --mono:ui-monospace,"SF Mono","Cascadia Code","Noto Sans Mono",monospace;
+  }
+  *{box-sizing:border-box}
+  .wrap{
+    font-family:var(--sans); color:var(--ink-body);
+    background:var(--paper); line-height:1.75;
+    -webkit-font-smoothing:antialiased; letter-spacing:.005em;
+    padding:clamp(20px,5vw,40px) clamp(16px,5vw,24px) 64px;
+    display:flex; justify-content:center;
+  }
+  .col{width:100%; max-width:680px}
+  .wrap h1,.wrap h2,.wrap h3{color:var(--ink); text-wrap:balance; margin:0}
+  .wrap p{margin:0}
+
+  /* eyebrow / labels */
+  .eyebrow{
+    font-family:var(--mono); font-size:12px; letter-spacing:.22em;
+    text-transform:uppercase; color:var(--teal); font-weight:600;
+  }
+
+  /* hero */
+  .hero{position:relative; padding:clamp(20px,4vw,32px) 0 clamp(28px,5vw,40px)}
+  .rose{
+    position:absolute; right:-40px; top:-28px; width:230px; height:230px;
+    opacity:.10; pointer-events:none; color:var(--amber);
+  }
+  .rose .needle{transform-origin:100px 100px}
+  @media(prefers-reduced-motion:no-preference){
+    .rose .needle{animation:settle 1.6s cubic-bezier(.22,1,.36,1) both}
+  }
+  @keyframes settle{from{transform:rotate(-58deg)}to{transform:rotate(0deg)}}
+  .hero h1{
+    font-size:clamp(28px,6.4vw,42px); line-height:1.28; font-weight:800;
+    letter-spacing:-.01em; margin:14px 0 0;
+  }
+  .hero .lede{
+    font-size:clamp(16px,2.6vw,18px); color:var(--ink-body);
+    margin-top:16px; max-width:34em;
+  }
+  .hero .lede b{color:var(--ink); font-weight:700}
+
+  /* primary action */
+  .action{
+    margin-top:26px; background:var(--paper-2);
+    border:1px solid var(--line); border-radius:14px;
+    padding:clamp(16px,3vw,22px); box-shadow:0 1px 0 #fff inset;
+  }
+  .copybtn{
+    width:100%; border:0; cursor:pointer; font-family:var(--sans);
+    background:var(--amber); color:#fff; font-weight:700;
+    font-size:clamp(16px,2.6vw,18px); letter-spacing:.02em;
+    padding:16px 20px; border-radius:10px; line-height:1.3;
+    display:flex; align-items:center; justify-content:center; gap:10px;
+    transition:background .18s ease, transform .06s ease;
+  }
+  .copybtn:hover{background:var(--amber-deep)}
+  .copybtn:active{transform:translateY(1px)}
+  .copybtn:focus-visible{outline:3px solid var(--teal); outline-offset:2px}
+  .copybtn svg{width:19px;height:19px;flex:none}
+  .copybtn.done{background:var(--teal)}
+  .action .hint{
+    font-size:14px; color:var(--muted); margin-top:12px; text-align:center;
+  }
+  .action .hint b{color:var(--ink-body)}
+
+  /* generic section */
+  .sec{padding-top:clamp(34px,6vw,52px)}
+  .sec > h2{
+    font-size:clamp(20px,3.4vw,25px); font-weight:800; line-height:1.4;
+    margin-bottom:6px;
+  }
+  .sec > .sub{color:var(--muted); font-size:15px; margin-bottom:20px}
+  .rule{height:1px; background:var(--line); border:0; margin:clamp(34px,6vw,52px) 0 0}
+
+  /* steps */
+  .steps{display:flex; flex-direction:column; gap:14px}
+  .step{
+    display:grid; grid-template-columns:auto 1fr; gap:16px; align-items:start;
+    background:var(--paper-2); border:1px solid var(--line-2);
+    border-radius:12px; padding:16px 18px;
+  }
+  .step .n{
+    font-family:var(--mono); font-weight:700; font-size:15px; color:#fff;
+    background:var(--teal); width:30px; height:30px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center; margin-top:1px;
+  }
+  .step h3{font-size:16.5px; font-weight:700; margin-bottom:2px}
+  .step p{font-size:15px; color:var(--ink-body)}
+
+  /* positioning card */
+  .pcard{
+    background:var(--card);
+    border:1px solid var(--ink);
+    border-radius:14px; padding:clamp(18px,3.6vw,26px);
+    position:relative; box-shadow:0 6px 22px -18px rgba(23,58,62,.6);
+  }
+  .pcard .tag{
+    position:absolute; top:14px; right:16px; font-family:var(--mono);
+    font-size:11px; letter-spacing:.14em; color:var(--muted);
+    text-transform:uppercase;
+  }
+  .pcard .ptitle{
+    font-weight:800; color:var(--ink); font-size:17px; letter-spacing:.04em;
+    display:flex; align-items:center; gap:8px; margin-bottom:16px;
+  }
+  .pcard .ptitle .rose-sm{width:20px;height:20px;color:var(--amber)}
+  .prow{padding:12px 0; border-top:1px dashed var(--line)}
+  .prow:first-of-type{border-top:0; padding-top:0}
+  .prow .k{
+    font-family:var(--mono); font-size:12px; letter-spacing:.08em;
+    color:var(--teal); text-transform:uppercase; margin-bottom:4px;
+    display:flex; align-items:center; gap:7px;
+  }
+  .prow .v{font-size:16px; color:var(--ink); font-weight:600; line-height:1.6}
+  .prow .v .fill{
+    color:var(--ink); border-bottom:2px solid var(--amber);
+    padding-bottom:1px;
+  }
+  .pfoot{
+    margin-top:16px; font-size:12.5px; color:var(--muted);
+    font-family:var(--mono); text-align:right;
+  }
+
+  /* usage list */
+  .uses{display:flex; flex-direction:column; gap:12px}
+  .use{
+    border:1px solid var(--line-2); border-radius:12px; padding:15px 18px;
+    background:var(--paper-2);
+  }
+  .use.lead{border-color:var(--amber); background:#FBF4EA}
+  .use .u-h{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap}
+  .use .u-h .badge{
+    font-family:var(--mono); font-size:11px; font-weight:700;
+    letter-spacing:.1em; color:var(--amber-deep); background:#F3E3CE;
+    padding:3px 8px; border-radius:20px;
+  }
+  .use.plain .u-h .badge{color:var(--teal); background:#DDEAE7}
+  .use .u-h h3{font-size:16px; font-weight:700}
+  .use p{font-size:14.5px; color:var(--ink-body); margin-top:6px}
+  .use a{color:var(--teal); font-weight:600; text-decoration:none; border-bottom:1px solid var(--line)}
+  .use a:hover{border-color:var(--teal)}
+
+  /* CTA blocks */
+  .cta{
+    border-radius:14px; padding:clamp(20px,4vw,26px);
+  }
+  .cta.discord{background:#173A3E; color:#D7E4E2}
+  .cta.discord h2{color:#fff}
+  .cta.discord p{color:#B9CBC9; font-size:15px; margin-top:8px; max-width:40em}
+  .btn{
+    display:inline-flex; align-items:center; gap:9px; margin-top:18px;
+    font-family:var(--sans); font-weight:700; font-size:15.5px;
+    padding:12px 22px; border-radius:10px; text-decoration:none;
+    transition:transform .06s ease, background .18s ease;
+  }
+  .btn:active{transform:translateY(1px)}
+  .btn:focus-visible{outline:3px solid var(--amber); outline-offset:2px}
+  .btn.on-dark{background:#fff; color:#173A3E}
+  .btn.on-dark:hover{background:#EAF1F0}
+  .btn.amber{background:var(--amber); color:#fff}
+  .btn.amber:hover{background:var(--amber-deep)}
+  .devnote{
+    font-family:var(--mono); font-size:12px; color:var(--muted);
+    margin-top:10px; letter-spacing:.02em;
+  }
+
+  /* honest list */
+  .honest{display:grid; gap:12px; grid-template-columns:1fr}
+  .honest li{
+    list-style:none; display:grid; grid-template-columns:auto 1fr; gap:12px;
+    font-size:15px; color:var(--ink-body);
+  }
+  .honest .mk{color:var(--muted); font-family:var(--mono); font-weight:700; user-select:none}
+  .honest b{color:var(--ink)}
+
+  /* footer */
+  .foot{
+    margin-top:clamp(40px,7vw,64px); padding-top:22px;
+    border-top:1px solid var(--line); font-size:13px; color:var(--muted);
+    display:flex; flex-wrap:wrap; gap:8px 16px; align-items:center;
+  }
+  .foot a{color:var(--teal); text-decoration:none; border-bottom:1px solid var(--line)}
+  .foot .dot{opacity:.5}
+
+  @media(max-width:520px){
+    .rose{width:170px;height:170px;right:-24px;top:-14px}
+  }
+</style>
+
+<div class="wrap">
+<div class="col">
+
+  <!-- HERO -->
+  <header class="hero">
+    <svg class="rose" viewBox="0 0 200 200" fill="none" aria-hidden="true">
+      <circle cx="100" cy="100" r="86" stroke="currentColor" stroke-width="1.4"/>
+      <circle cx="100" cy="100" r="62" stroke="currentColor" stroke-width="1" stroke-dasharray="2 6"/>
+      <g class="needle">
+        <path d="M100 22 L112 100 L100 108 L88 100 Z" fill="currentColor"/>
+        <path d="M100 178 L112 100 L100 92 L88 100 Z" fill="currentColor" opacity=".35"/>
+      </g>
+      <path d="M22 100 L100 88 M178 100 L100 112" stroke="currentColor" stroke-width="1.4"/>
+      <circle cx="100" cy="100" r="5" fill="currentColor"/>
+    </svg>
+    <span class="eyebrow">定位小書僮 · 免費開源</span>
+    <h1>你不是沒有方向，<br>是還沒被好好問過一輪。</h1>
+    <p class="lede">一個免費、開源的自助定位工具。它像朋友一樣，<b>一題一題把你問清楚</b>，幫你在 AI 時代收斂出一張「定位卡」——<b>想逃離什麼、你是誰、接下來 90 天走哪。</b></p>
+
+    <div class="action">
+      <button class="copybtn" id="copyBtn" type="button" aria-label="複製定位小書僮，貼到任何 AI">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <span id="copyLabel">一鍵複製 → 貼到任何 AI</span>
+      </button>
+      <p class="hint">複製後，貼進 <b>ChatGPT、Claude、Gemini</b> 任何一個 AI，送出，它就會開始問你。</p>
+    </div>
+  </header>
+
+  <hr class="rule">
+
+  <!-- WHAT YOU GET: the card -->
+  <section class="sec">
+    <h2>聊完，你會拿到這張卡</h2>
+    <p class="sub">抽象的焦慮，收斂成三句話。這就是你的起點。</p>
+    <div class="pcard" role="img" aria-label="定位卡範例">
+      <span class="tag">範例</span>
+      <div class="ptitle">
+        <svg class="rose-sm" viewBox="0 0 200 200" fill="none" aria-hidden="true"><path d="M100 20 L114 100 L100 112 L86 100 Z" fill="currentColor"/><circle cx="100" cy="100" r="6" fill="currentColor"/></svg>
+        我的定位卡
+      </div>
+      <div class="prow">
+        <div class="k">😤 我想逃離</div>
+        <div class="v">每天幫老闆做重複的報表，做到懷疑自己只是個工具人。</div>
+      </div>
+      <div class="prow">
+        <div class="k">🪪 我是一個</div>
+        <div class="v">把十年行政經驗變成「<span class="fill">教人用 AI 省時</span>」的上班族。</div>
+      </div>
+      <div class="prow">
+        <div class="k">🎯 接下來 90 天</div>
+        <div class="v">日更「一個上班族的 AI 偷懶筆記」。</div>
+      </div>
+      <p class="pfoot">用免費開源的「定位小書僮」問出來的</p>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- HOW: three steps -->
+  <section class="sec">
+    <h2>怎麼開始（三步，不用裝任何東西）</h2>
+    <p class="sub">你會打字、會複製貼上，就夠了。</p>
+    <div class="steps">
+      <div class="step"><span class="n">1</span><div><h3>複製</h3><p>按上面那顆按鈕，把「定位小書僮」整段複製起來。</p></div></div>
+      <div class="step"><span class="n">2</span><div><h3>貼上</h3><p>打開任何一個 AI（ChatGPT／Claude／Gemini…），貼進去、送出。</p></div></div>
+      <div class="step"><span class="n">3</span><div><h3>聊</h3><p>它會像朋友一樣一題一題問你。聊個十幾分鐘，它就給你那張定位卡。</p></div></div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- USAGE tiers -->
+  <section class="sec">
+    <h2>三種用法</h2>
+    <p class="sub">從最低門檻開始，愈下面愈進階。完全新手 → 先看 <a href="https://github.com/jason201385-commits/positioning-companion/blob/main/%E6%96%B0%E6%89%8B%E5%AE%89%E8%A3%9D%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.md" target="_blank" rel="noopener" style="color:var(--teal);font-weight:600;text-decoration:none;border-bottom:1px solid var(--line)">新手安裝使用指南</a>。</p>
+    <div class="uses">
+      <div class="use lead">
+        <div class="u-h"><span class="badge">最簡單</span><h3>貼進任何 AI 對話視窗</h3></div>
+        <p>就是上面那顆按鈕。不用帳號、不用安裝，任何 AI 都能跑。推薦所有人從這裡開始。</p>
+      </div>
+      <div class="use plain">
+        <div class="u-h"><span class="badge">進階</span><h3>當成 Claude Code 的 skill</h3></div>
+        <p>還沒裝 Claude Code？先照 <a href="https://claude.easyknowai.com/" target="_blank" rel="noopener">下載安裝教學</a>（有圖、一步一步）裝好，再把整包裝成 skill 隨時叫用。</p>
+      </div>
+      <div class="use plain">
+        <div class="u-h"><span class="badge">自由</span><h3>自己讀 references，帶別人跑</h3></div>
+        <p>想幫別人做定位、或研究方法本身：完整的定位引擎、對話骨架、賽道庫都在 <a href="https://github.com/jason201385-commits/positioning-companion" target="_blank" rel="noopener">開源庫</a> 裡。</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- Discord -->
+  <section class="sec">
+    <div class="cta discord">
+      <span class="eyebrow" style="color:#8FBAB6">卡住了？想有人看一眼？</span>
+      <h2 style="font-size:clamp(20px,3.4vw,25px);margin-top:8px">把定位卡貼到「自由工坊」社群</h2>
+      <p>不確定方向對不對，或跑到一半卡住——貼到自由工坊 Discord，Jason 或社群夥伴會幫你看一眼。免費，依大家有空的程度回覆，不保證每張都排得到。</p>
+      <a class="btn on-dark" href="https://discord.gg/bxwDGxmnA" target="_blank" rel="noopener">
+        加入自由工坊 Discord →
+      </a>
+    </div>
+  </section>
+
+  <!-- 配套工具 & 致謝 -->
+  <section class="sec">
+    <h2>定位完，用這些把方向變成每天的產出</h2>
+    <p class="sub">我們的社群，基本上都架在 <a href="https://github.com/Hao0321" target="_blank" rel="noopener" style="color:var(--teal);font-weight:600;text-decoration:none;border-bottom:1px solid var(--line)">Hao（@Hao0321）</a> 前輩開源的這四個工具上。誠心致謝 🙏</p>
+    <div class="uses">
+      <div class="use plain"><div class="u-h"><span class="badge">發文</span><h3>social-post</h3></div><p>學你的語氣、排 14 天內容日曆、自動發到 FB／IG／Threads／X。<a href="https://github.com/Hao0321/claude-skill-social-post" target="_blank" rel="noopener">開源庫 →</a></p></div>
+      <div class="use plain"><div class="u-h"><span class="badge">生圖影音</span><h3>ai-media-generator</h3></div><p>在 14+ 平台（Midjourney／Kling／Suno／Veo…）產出導演級生圖、生影片、生音樂提示詞。<a href="https://github.com/Hao0321/ai-media-generator" target="_blank" rel="noopener">開源庫 →</a></p></div>
+      <div class="use plain"><div class="u-h"><span class="badge">剪影片</span><h3>video-autopilot-kit</h3></div><p>CapCut 自動化＋後製管線，做短影音／無旁白 vlog。<a href="https://github.com/Hao0321/video-autopilot-kit" target="_blank" rel="noopener">開源庫 →</a></p></div>
+      <div class="use plain"><div class="u-h"><span class="badge">保持乾淨</span><h3>code-cleanup</h3></div><p>掃 skill／repo 的重複、命名漂移、同步落差。<a href="https://github.com/Hao0321/claude-skill-code-cleanup" target="_blank" rel="noopener">開源庫 →</a></p></div>
+    </div>
+    <p class="sub" style="margin-top:16px;margin-bottom:0">定位小書僮是<b style="color:var(--ink)">輔助</b>：先幫你想清楚方向，這些工具才真正用得上（有神兵沒方向會空轉）。它不取代任何工具——四個 repo 都是 MIT 授權。</p>
+  </section>
+
+  <hr class="rule">
+
+  <!-- Honest -->
+  <section class="sec">
+    <h2>先把話講清楚</h2>
+    <p class="sub">它讓你更清楚自己，不是給你一張保證致富的地圖。</p>
+    <ul class="honest">
+      <li><span class="mk">—</span><span><b>不保證你變現或成功。</b>內容和接案的回報是複利，不是急救。</span></li>
+      <li><span class="mk">—</span><span><b>不替你做財務決定。</b>不幫你決定辭職、借錢、投資——只給你判斷的框架。</span></li>
+      <li><span class="mk">—</span><span><b>方向是你選的。</b>它給你 2-3 個候選，最後怎麼走，永遠是你自己挑。</span></li>
+    </ul>
+  </section>
+
+  <footer class="foot">
+    <span>定位小書僮 · 免費開源</span><span class="dot">·</span>
+    <span>由 Jason（傳恩）／easyknowai 製作</span><span class="dot">·</span>
+    <a href="https://github.com/jason201385-commits/positioning-companion" target="_blank" rel="noopener">GitHub 開源庫</a><span class="dot">·</span>
+    <span>方法源自真實陪跑蒸餾（已去識別化）</span>
+  </footer>
+
+</div>
+</div>
+
+<!-- prompt payload for one-click copy -->
+<pre id="promptText" hidden>你是一位溫暖、會聊天的定位教練。用「陪聊裡藏著探勘」的方式，幫我在 AI 時代找到我該做的方向。全程講台灣中文。
+
+【怎麼跟我聊】
+· 一次只問一題，像朋友在咖啡廳聊天，不是問卷。上一題沒聊完，不丟下一題。
+· 問之前先講「為什麼問這題」。
+· 先自曝一個你自己的小例子再問我（例：「像我就受不了下雨天不能出門」），讓我知道可以答很小的事。
+· 我給抽象答案時，追一個具體畫面：「上一次是什麼情況？」
+· 玩笑接住；我講到情緒（討厭、煩、怕）先接住（「我懂」）再繼續。
+· 不確定就說不確定，絕不亂編。
+
+【問我的順序】（邊聊邊走，不要一次倒一堆題目）
+1. 我喜歡什麼、不喜歡什麼？（我不喜歡的＝以後排計畫時的紅線，絕不違反）
+2. 夢想年：「如果有一年、有夠多的錢和時間，但不能工作、只能花錢，你會怎麼安排？」
+   → 進階「無敵卡」：「假設全世界都支持你、做什麼都會成功，你會怎麼規劃第一週、第一年、前十年？」（如果我答的還是在工作，提醒我「不能工作喔」再問一次）
+3. 現在的生活或工作裡，哪件事讓你早上最不想起床？
+4. 盤點我已有的技能／經歷，哪一個離「現在就能換到錢」最近。
+
+【幫我選方向】
+· 如果我壓力大、沒存款 → 先建議我穩住現金流，別急著賭新方向（給我判斷框架，但不替我決定辭職／借錢／投資）。
+· 選離我既有能力近的（回收路徑短，但別保證速成）。
+· 差異化優先找「我的經歷與故事」，不是「我多專業」——純知識大家問 AI 就好。
+· 如果我已經在做、卻說「模糊」→ 先帶我復盤已發的內容（哪一類反應最好），不要從零重挖。
+· 如果我的內容全在講「我在用 AI」→ 提醒我：AI 是放大器，本業才是賽道。
+· 給我 2-3 個方向候選，讓我自己挑，不替我拍板。
+
+【聊完，輸出一張「定位卡」】
+🧭 我的定位卡
+😤 我想逃離：____（一句話痛點，要具體場景，不是抽象詞）
+🪪 我是一個 ____ 的 ____
+🎯 接下來 90 天：____
+（用免費開源的「定位小書僮」問出來的）
+然後告訴我兩件事：①這張卡我可以「改到更像我」，也可以「乾脆去成為它」——選擇權在我；②貼到社群前，把「想逃離」那欄改成不指名道姓的版本。
+
+【你的紅線（絕不能違反）】
+· 不保證我會變現或成功。· 不替我做財務決定。· 用台灣用語，不用中國網路詞。· 不編數字、不編案例。
+
+現在開始：先用一句話跟我說我們要做什麼，然後問我第一題。</pre>
+
+<script>
+  (function(){
+    var btn=document.getElementById('copyBtn'),
+        label=document.getElementById('copyLabel'),
+        src=document.getElementById('promptText'),
+        resetT;
+    function done(){
+      btn.classList.add('done');
+      label.textContent='已複製 ✓  貼到 AI 送出就開始';
+      clearTimeout(resetT);
+      resetT=setTimeout(function(){
+        btn.classList.remove('done');
+        label.textContent='一鍵複製 → 貼到任何 AI';
+      },2600);
+    }
+    function fallback(text){
+      var ta=document.createElement('textarea');
+      ta.value=text; ta.style.position='fixed'; ta.style.opacity='0';
+      document.body.appendChild(ta); ta.focus(); ta.select();
+      try{document.execCommand('copy'); done();}catch(e){
+        label.textContent='請長按上方文字手動複製';
+      }
+      document.body.removeChild(ta);
+    }
+    btn.addEventListener('click',function(){
+      var text=src.textContent;
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(done).catch(function(){fallback(text);});
+      }else{fallback(text);}
+    });
+  })();
+</script>
+
+</body>
+</html>
