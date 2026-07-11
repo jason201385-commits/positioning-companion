@@ -1,0 +1,25 @@
+name: Validate positioning companion
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check generated prompt parity
+        run: |
+          python scripts/build_public_assets.py
+          git diff --exit-code -- docs/prompt-full.txt
+      - name: Validate skill and public assets
+        run: python scripts/validate_public.py
+
+

@@ -45,7 +45,7 @@
   }
 
   /* hero */
-  .hero{position:relative; padding:clamp(20px,4vw,32px) 0 clamp(28px,5vw,40px)}
+  .hero{position:relative; overflow:hidden; padding:clamp(20px,4vw,32px) 0 clamp(28px,5vw,40px)}
   .rose{
     position:absolute; right:-40px; top:-28px; width:230px; height:230px;
     opacity:.10; pointer-events:none; color:var(--amber);
@@ -84,6 +84,15 @@
   .copybtn:focus-visible{outline:3px solid var(--teal); outline-offset:2px}
   .copybtn svg{width:19px;height:19px;flex:none}
   .copybtn.done{background:var(--teal)}
+  .copybtn.secondary{
+    margin-top:10px; background:transparent; color:var(--teal);
+    border:1px solid var(--teal);
+  }
+  .copybtn.secondary:hover{background:#E5EFED}
+  .mode-note{
+    margin-top:10px; padding:10px 12px; border-radius:8px;
+    background:#F3E3CE; color:var(--ink-body); font-size:13.5px;
+  }
   .action .hint{
     font-size:14px; color:var(--muted); margin-top:12px; text-align:center;
   }
@@ -230,14 +239,19 @@
     </svg>
     <span class="eyebrow">定位小書僮 · 免費開源</span>
     <h1>你不是沒有方向，<br>是還沒被好好問過一輪。</h1>
-    <p class="lede">一個免費、開源的自助定位工具。它像朋友一樣，<b>一題一題把你問清楚</b>，幫你在 AI 時代收斂出一張「定位卡」——<b>想逃離什麼、你是誰、接下來 90 天走哪。</b></p>
+    <p class="lede">一個免費、開源的自助定位工具。它像朋友一樣，<b>一題一題把你問清楚</b>。先拿快速草稿，或直接跑完整驗證；兩種結果會清楚標示，不把草稿假裝成定論。</p>
 
     <div class="action">
-      <button class="copybtn" id="copyBtn" type="button" aria-label="複製定位小書僮，貼到任何 AI">
+      <button class="copybtn" id="copyQuickBtn" type="button" aria-label="複製快速定位草稿提示，貼到 AI">
         <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-        <span id="copyLabel">一鍵複製 → 貼到任何 AI</span>
+        <span id="copyQuickLabel" aria-live="polite">複製快速定位草稿</span>
       </button>
-      <p class="hint">複製後，貼進 <b>ChatGPT、Claude、Gemini</b> 任何一個 AI，送出，它就會開始問你。</p>
+      <button class="copybtn secondary" id="copyFullBtn" type="button" aria-label="複製完整定位驗證提示，貼到 AI">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <span id="copyFullLabel" aria-live="polite">複製完整定位驗證</span>
+      </button>
+      <p class="mode-note"><b>快速版</b>只產生待驗證草稿；<b>完整版</b>才會跑完受眾、變現鉤、財務與反向結論 gate。</p>
+      <p class="hint">複製後貼進你已登入的 <b>ChatGPT、Claude 或 Gemini</b>，送出後跟著一題一題回答。</p>
     </div>
   </header>
 
@@ -246,9 +260,9 @@
   <!-- WHAT YOU GET: the card -->
   <section class="sec">
     <h2>聊完，你會拿到這張卡</h2>
-    <p class="sub">抽象的焦慮，收斂成三句話。這就是你的起點。</p>
+    <p class="sub">快速版是草稿；通過完整 gate 後，才是可拿去驗證的方向。</p>
     <div class="pcard" role="img" aria-label="定位卡範例">
-      <span class="tag">範例</span>
+      <span class="tag">QUICK DRAFT · 未驗證 · 本業放大型</span>
       <div class="ptitle">
         <svg class="rose-sm" viewBox="0 0 200 200" fill="none" aria-hidden="true"><path d="M100 20 L114 100 L100 112 L86 100 Z" fill="currentColor"/><circle cx="100" cy="100" r="6" fill="currentColor"/></svg>
         我的定位卡
@@ -259,11 +273,19 @@
       </div>
       <div class="prow">
         <div class="k">🪪 我是一個</div>
-        <div class="v">把十年行政經驗變成「<span class="fill">教人用 AI 省時</span>」的上班族。</div>
+        <div class="v">把十年行政經驗變成「<span class="fill">流程改善力</span>」的上班族。</div>
       </div>
       <div class="prow">
-        <div class="k">🎯 接下來 90 天</div>
-        <div class="v">日更「一個上班族的 AI 偷懶筆記」。</div>
+        <div class="k">🎯 下一個小實驗</div>
+        <div class="v">先挑一份重複報表，用去識別資料做可回復測試；不先做內容或產品。</div>
+      </div>
+      <div class="prow">
+        <div class="k">↩ 不用本產品的替代路</div>
+        <div class="v">先用試算表範本整理原流程，請實際使用者確認是否更好用。</div>
+      </div>
+      <div class="prow">
+        <div class="k">🧪 可證偽檢查</div>
+        <div class="v">若品質、錯誤或實際採用沒有改善，或風險上升，就回復原流程。</div>
       </div>
       <p class="pfoot">用免費開源的「定位小書僮」問出來的</p>
     </div>
@@ -276,9 +298,9 @@
     <h2>怎麼開始（三步，不用裝任何東西）</h2>
     <p class="sub">你會打字、會複製貼上，就夠了。</p>
     <div class="steps">
-      <div class="step"><span class="n">1</span><div><h3>複製</h3><p>按上面那顆按鈕，把「定位小書僮」整段複製起來。</p></div></div>
+      <div class="step"><span class="n">1</span><div><h3>選模式並複製</h3><p>想先試就選快速草稿；要拿去行動就跑完整驗證。</p></div></div>
       <div class="step"><span class="n">2</span><div><h3>貼上</h3><p>打開任何一個 AI（ChatGPT／Claude／Gemini…），貼進去、送出。</p></div></div>
-      <div class="step"><span class="n">3</span><div><h3>聊</h3><p>它會像朋友一樣一題一題問你。聊個十幾分鐘，它就給你那張定位卡。</p></div></div>
+      <div class="step"><span class="n">3</span><div><h3>聊</h3><p>它會一題一題追問。資料不足時不硬收斂，完整 gate 未過就清楚標示。</p></div></div>
     </div>
   </section>
 
@@ -291,7 +313,7 @@
     <div class="uses">
       <div class="use lead">
         <div class="u-h"><span class="badge">最簡單</span><h3>貼進任何 AI 對話視窗</h3></div>
-        <p>就是上面那顆按鈕。不用帳號、不用安裝，任何 AI 都能跑。推薦所有人從這裡開始。</p>
+        <p>不用安裝；選快速草稿或完整驗證，貼進你已在使用的 AI。快速版不等於完成定位。</p>
       </div>
       <div class="use plain">
         <div class="u-h"><span class="badge">進階</span><h3>當成 Claude Code 的 skill</h3></div>
@@ -320,15 +342,15 @@
 
   <!-- 配套工具 & 致謝 -->
   <section class="sec">
-    <h2>定位完，用這些把方向變成每天的產出</h2>
-    <p class="sub">我們的社群，基本上都架在 <a href="https://github.com/Hao0321" target="_blank" rel="noopener" style="color:var(--teal);font-weight:600;text-decoration:none;border-bottom:1px solid var(--line)">Hao（@Hao0321）</a> 前輩開源的這四個工具上。誠心致謝 🙏</p>
+    <h2>真的需要內容或媒體時，再接這些工具</h2>
+    <p class="sub">以下是 <a href="https://github.com/Hao0321" target="_blank" rel="noopener" style="color:var(--teal);font-weight:600;text-decoration:none;border-bottom:1px solid var(--line)">Hao（@Hao0321）</a> 前輩的開源工具。它們是選配，不是完成定位的前提。</p>
     <div class="uses">
-      <div class="use plain"><div class="u-h"><span class="badge">發文</span><h3>social-post</h3></div><p>學你的語氣、排 14 天內容日曆、自動發到 FB／IG／Threads／X。<a href="https://github.com/Hao0321/claude-skill-social-post" target="_blank" rel="noopener">開源庫 →</a></p></div>
-      <div class="use plain"><div class="u-h"><span class="badge">生圖影音</span><h3>ai-media-generator</h3></div><p>在 14+ 平台（Midjourney／Kling／Suno／Veo…）產出導演級生圖、生影片、生音樂提示詞。<a href="https://github.com/Hao0321/ai-media-generator" target="_blank" rel="noopener">開源庫 →</a></p></div>
+      <div class="use plain"><div class="u-h"><span class="badge">發文</span><h3>social-post</h3></div><p>協助整理語氣、內容規劃與發佈工作流；實際支援範圍以該 repo 當前說明為準。<a href="https://github.com/Hao0321/claude-skill-social-post" target="_blank" rel="noopener">開源庫 →</a></p></div>
+      <div class="use plain"><div class="u-h"><span class="badge">生圖影音</span><h3>ai-media-generator</h3></div><p>協助產生圖片、影片與音樂提示詞；支援平台以該 repo 當前說明為準。<a href="https://github.com/Hao0321/ai-media-generator" target="_blank" rel="noopener">開源庫 →</a></p></div>
       <div class="use plain"><div class="u-h"><span class="badge">剪影片</span><h3>video-autopilot-kit</h3></div><p>CapCut 自動化＋後製管線，做短影音／無旁白 vlog。<a href="https://github.com/Hao0321/video-autopilot-kit" target="_blank" rel="noopener">開源庫 →</a></p></div>
       <div class="use plain"><div class="u-h"><span class="badge">保持乾淨</span><h3>code-cleanup</h3></div><p>掃 skill／repo 的重複、命名漂移、同步落差。<a href="https://github.com/Hao0321/claude-skill-code-cleanup" target="_blank" rel="noopener">開源庫 →</a></p></div>
     </div>
-    <p class="sub" style="margin-top:16px;margin-bottom:0">定位小書僮是<b style="color:var(--ink)">輔助</b>：先幫你想清楚方向，這些工具才真正用得上（有神兵沒方向會空轉）。它不取代任何工具——四個 repo 都是 MIT 授權。</p>
+    <p class="sub" style="margin-top:16px;margin-bottom:0">定位小書僮只負責先釐清方向。若本業改善、不做內容或不做產品更合理，就不必接任何下游工具；各 repo 的授權與功能以其當前說明為準。</p>
   </section>
 
   <hr class="rule">
@@ -354,13 +376,23 @@
 </div>
 </div>
 
-<!-- prompt payload for one-click copy -->
-<pre id="promptText" hidden>你是一位溫暖、會聊天的定位教練。用「陪聊裡藏著探勘」的方式，幫我在 AI 時代找到我該做的方向。全程講台灣中文。
+<!-- Quick-mode payload. Full mode is generated from the canonical one-file prompt. -->
+<pre id="quickPromptText" hidden>[positioning-companion]
+mode: quick-draft
+version: 2026-07-11
+
+你是一位溫暖、會聊天的定位教練。用「陪聊裡藏著探勘」的方式，幫我在 AI 時代找到方向草稿。全程講台灣中文。
+
+【這個模式的邊界】
+· 這是快速草稿，不是完整定位；最後必須標 gate_status: not_validated。
+· 資料不足就繼續問，不為了交付硬下結論。
+· 允許結論是：留在本業、不要做內容、不要用本產品、先停止，或先做小實驗。
+· AI 提議與我的原話要分開標示，不能把 AI 先講的方向說成是我自己反覆提到。
 
 【怎麼跟我聊】
 · 一次只問一題，像朋友在咖啡廳聊天，不是問卷。上一題沒聊完，不丟下一題。
 · 問之前先講「為什麼問這題」。
-· 先自曝一個你自己的小例子再問我（例：「像我就受不了下雨天不能出門」），讓我知道可以答很小的事。
+· 可以給一個明確標為「假設」的小例子，但不要假裝 AI 自己有生活經驗。
 · 我給抽象答案時，追一個具體畫面：「上一次是什麼情況？」
 · 玩笑接住；我講到情緒（討厭、煩、怕）先接住（「我懂」）再繼續。
 · 不確定就說不確定，絕不亂編。
@@ -379,49 +411,72 @@
 · 如果我已經在做、卻說「模糊」→ 先帶我復盤已發的內容（哪一類反應最好），不要從零重挖。
 · 如果我的內容全在講「我在用 AI」→ 提醒我：AI 是放大器，本業才是賽道。
 · 給我 2-3 個方向候選，讓我自己挑，不替我拍板。
+· 每個候選都要寫「不用本產品時，我還能怎麼走」。
 
 【聊完，輸出一張「定位卡」】
+mode: quick-draft
+version: 2026-07-11
+gate_status: not_validated
 🧭 我的定位卡
 😤 我想逃離：____（一句話痛點，要具體場景，不是抽象詞）
 🪪 我是一個 ____ 的 ____
-🎯 接下來 90 天：____
+🎯 方向候選：____
+↩ no_product_alternative：____
+🧪 falsifiable_check：____（一個能證明方向不對的小實驗）
+🗣 user_evidence：____（我的原話／行為）
+🤖 ai_suggestion：____（AI 推論，不能冒充我的原話）
 （用免費開源的「定位小書僮」問出來的）
-然後告訴我兩件事：①這張卡我可以「改到更像我」，也可以「乾脆去成為它」——選擇權在我；②貼到社群前，把「想逃離」那欄改成不指名道姓的版本。
+然後告訴我：①這只是草稿；②貼到社群前先移除可識別的人名／公司／財務資料；③要完成驗證，使用完整版：
+https://github.com/jason201385-commits/positioning-companion/blob/main/%E4%B8%80%E9%8D%B5%E5%AE%9A%E4%BD%8D-%E8%B2%BC%E4%B8%8A%E4%BB%BB%E4%BD%95AI.md
 
 【你的紅線（絕不能違反）】
-· 不保證我會變現或成功。· 不替我做財務決定。· 用台灣用語，不用中國網路詞。· 不編數字、不編案例。
+· 不保證我會變現或成功。· 不替我做財務決定。· 用台灣用語，不用中國網路詞。· 不編數字、不編案例。· 不要求原始病患資料、個資或公司機密；先用合成或最小去識別資料，權限不明就停止。
 
 現在開始：先用一句話跟我說我們要做什麼，然後問我第一題。</pre>
 
 <script>
   (function(){
-    var btn=document.getElementById('copyBtn'),
-        label=document.getElementById('copyLabel'),
-        src=document.getElementById('promptText'),
-        resetT;
-    function done(){
+    var quickBtn=document.getElementById('copyQuickBtn'),
+        quickLabel=document.getElementById('copyQuickLabel'),
+        fullBtn=document.getElementById('copyFullBtn'),
+        fullLabel=document.getElementById('copyFullLabel'),
+        quickSrc=document.getElementById('quickPromptText'),
+        resetTimers=new Map();
+    function done(btn,label,original){
       btn.classList.add('done');
       label.textContent='已複製 ✓  貼到 AI 送出就開始';
-      clearTimeout(resetT);
-      resetT=setTimeout(function(){
+      clearTimeout(resetTimers.get(btn));
+      resetTimers.set(btn,setTimeout(function(){
         btn.classList.remove('done');
-        label.textContent='一鍵複製 → 貼到任何 AI';
-      },2600);
+        label.textContent=original;
+      },2600));
     }
-    function fallback(text){
+    function fallback(text,btn,label,original){
       var ta=document.createElement('textarea');
       ta.value=text; ta.style.position='fixed'; ta.style.opacity='0';
       document.body.appendChild(ta); ta.focus(); ta.select();
-      try{document.execCommand('copy'); done();}catch(e){
-        label.textContent='請長按上方文字手動複製';
+      try{document.execCommand('copy'); done(btn,label,original);}catch(e){
+        label.textContent='複製失敗，請開 GitHub 使用文字版';
       }
       document.body.removeChild(ta);
     }
-    btn.addEventListener('click',function(){
-      var text=src.textContent;
+    function copy(text,btn,label,original){
       if(navigator.clipboard&&navigator.clipboard.writeText){
-        navigator.clipboard.writeText(text).then(done).catch(function(){fallback(text);});
-      }else{fallback(text);}
+        navigator.clipboard.writeText(text).then(function(){done(btn,label,original);}).catch(function(){fallback(text,btn,label,original);});
+      }else{fallback(text,btn,label,original);}
+    }
+    quickBtn.addEventListener('click',function(){
+      copy(quickSrc.textContent,quickBtn,quickLabel,'複製快速定位草稿');
+    });
+    fullBtn.addEventListener('click',function(){
+      fullLabel.textContent='載入完整版…';
+      fetch('prompt-full.txt',{cache:'no-store'})
+        .then(function(response){if(!response.ok){throw new Error('prompt unavailable');} return response.text();})
+        .then(function(text){copy(text,fullBtn,fullLabel,'複製完整定位驗證');})
+        .catch(function(){
+          fullLabel.textContent='完整版尚未部署，請開 GitHub 文字版';
+          window.open('https://github.com/jason201385-commits/positioning-companion/blob/main/%E4%B8%80%E9%8D%B5%E5%AE%9A%E4%BD%8D-%E8%B2%BC%E4%B8%8A%E4%BB%BB%E4%BD%95AI.md','_blank','noopener');
+        });
     });
   })();
 </script>
